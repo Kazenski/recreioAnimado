@@ -10,6 +10,16 @@ Todas as alterações relevantes neste projeto são documentadas neste arquivo.
 
 ## [Unreleased] - Em desenvolvimento
 
+## [v1.2.1] — 2026-10-10
+### Adicionado
+- **Logo do colégio** na tela dos alunos (recorte redondo), arquivo `assets/colegio.jpg`.
+
+### Arquivos tocados
+- index.html
+- assets/colegio.jpg (novo)
+- CHANGELOG.md
+- changelog.json
+
 ## [v1.2.0] — 2026-10-10
 ### Adicionado
 - **Cadastro oficial de turmas**: o professor pode cadastrar e remover turmas no painel (novo card "Turmas").

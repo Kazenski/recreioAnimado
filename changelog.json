@@ -1,8 +1,43 @@
 {
-  "geradoEm": "2026-10-10T19:45:44+00:00",
-  "versaoAtual": "1.2.0",
-  "totalEntradas": 6,
+  "geradoEm": "2026-10-10T19:48:17+00:00",
+  "versaoAtual": "1.2.1",
+  "totalEntradas": 7,
   "entradas": [
+    {
+      "versao": "1.2.1",
+      "data": "2026-10-10",
+      "autor": "",
+      "escopo": "",
+      "arquivos": [
+        "index.html",
+        "assets/colegio.jpg (novo)",
+        "CHANGELOG.md",
+        "changelog.json"
+      ],
+      "secoes": [
+        {
+          "titulo": "Adicionado",
+          "chave": "adicionado",
+          "blocos": [
+            {
+              "titulo": "",
+              "nivel": null,
+              "linhas": [
+                [
+                  "li",
+                  "**Logo do colégio** na tela dos alunos (recorte redondo), arquivo `assets/colegio.jpg`."
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          "titulo": "Arquivos tocados",
+          "chave": "arquivos tocados",
+          "blocos": []
+        }
+      ]
+    },
     {
       "versao": "1.2.0",
       "data": "2026-10-10",
