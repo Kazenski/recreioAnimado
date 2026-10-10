@@ -306,7 +306,7 @@ async function adicionarTurma() {
   }
 }
 
-async function removerTurma(nome) {
+async function excluirTurma(nome) {
   if (!confirm('Remover a turma "' + nome + '"? Os pedidos dela não são apagados.')) return;
   try {
     const r = await removerTurma(token, nome);
@@ -369,7 +369,7 @@ export function initProfessor(cbs = {}) {
   el.listaTurmas.addEventListener("click", (ev) => {
     const botao = ev.target.closest(".acao-turma");
     if (!botao) return;
-    removerTurma(botao.dataset.turma);
+    excluirTurma(botao.dataset.turma);
   });
 
   el.listaPedidos.addEventListener("click", (ev) => {
