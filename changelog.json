@@ -1,8 +1,47 @@
 {
-  "geradoEm": "2026-10-10T18:29:05+00:00",
-  "versaoAtual": "1.0.1",
-  "totalEntradas": 2,
+  "geradoEm": "2026-10-10T18:46:15+00:00",
+  "versaoAtual": "1.0.2",
+  "totalEntradas": 3,
   "entradas": [
+    {
+      "versao": "1.0.2",
+      "data": "2026-10-10",
+      "autor": "",
+      "escopo": "",
+      "arquivos": [
+        "index.html",
+        "js/main.js",
+        "CHANGELOG.md",
+        "changelog.json"
+      ],
+      "secoes": [
+        {
+          "titulo": "Alterado",
+          "chave": "alterado",
+          "blocos": [
+            {
+              "titulo": "",
+              "nivel": null,
+              "linhas": [
+                [
+                  "li",
+                  "Rodapé agora mostra a versão **dinamicamente** a partir do `changelog.json` (`versaoAtual`), mantendo o link para o `CHANGELOG.md`. Assim a versão exibida nunca fica defasada em relação ao changelog. Se o `fetch` falhar, mantém o texto estático como reserva."
+                ],
+                [
+                  "li",
+                  "Texto de reserva da versão no `index.html` atualizado para `v1.0.2`."
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          "titulo": "Arquivos tocados",
+          "chave": "arquivos tocados",
+          "blocos": []
+        }
+      ]
+    },
     {
       "versao": "1.0.1",
       "data": "2026-10-10",

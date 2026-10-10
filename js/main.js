@@ -28,10 +28,28 @@ function atualizarCabecalho() {
 }
 
 // ---------------------------------------------------------------------------
+// Versão exibida no rodapé
+// Lê o changelog.json para nunca ficar defasada em relação ao CHANGELOG.md.
+// ---------------------------------------------------------------------------
+async function atualizarVersao() {
+  const link = document.getElementById("link-versao");
+  if (!link) return;
+  try {
+    const resp = await fetch("changelog.json", { cache: "no-store" });
+    if (!resp.ok) return;
+    const dados = await resp.json();
+    if (dados && dados.versaoAtual) link.textContent = "v" + dados.versaoAtual;
+  } catch (e) {
+    /* mantém o texto estático como reserva */
+  }
+}
+
+// ---------------------------------------------------------------------------
 // Boot
 // ---------------------------------------------------------------------------
 function iniciar() {
   initAluno();
+  atualizarVersao();
 
   prof.initProfessor({
     onLogin: atualizarCabecalho,

@@ -10,6 +10,17 @@ Todas as alterações relevantes neste projeto são documentadas neste arquivo.
 
 ## [Unreleased] - Em desenvolvimento
 
+## [v1.0.2] — 2026-10-10
+### Alterado
+- Rodapé agora mostra a versão **dinamicamente** a partir do `changelog.json` (`versaoAtual`), mantendo o link para o `CHANGELOG.md`. Assim a versão exibida nunca fica defasada em relação ao changelog. Se o `fetch` falhar, mantém o texto estático como reserva.
+- Texto de reserva da versão no `index.html` atualizado para `v1.0.2`.
+
+### Arquivos tocados
+- index.html
+- js/main.js
+- CHANGELOG.md
+- changelog.json
+
 ## [v1.0.1] — 2026-10-10
 ### Corrigido
 - Apontado o projeto Firebase padrão em `.firebaserc` para **`recreio-animado-be31b`** (o projeto real, que tem o app Web "RecreioAnimado" e o Firestore). Havia um projeto homônimo `recreio-animado` sem app e sem Firestore na conta, que causava confusão no deploy.
