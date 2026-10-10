@@ -170,7 +170,8 @@ function emCooldown() {
 
 function atualizarBotaoEnviar() {
   if (emCooldown()) return;
-  const pronto = !!selecionada && FIREBASE_CONFIGURADO;
+  const turmaOk = !!el.campoTurma && el.campoTurma.value.trim().length > 0;
+  const pronto = !!selecionada && FIREBASE_CONFIGURADO && turmaOk;
   el.btnEnviar.disabled = !pronto;
   el.btnEnviar.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Enviar pedido';
 }
@@ -215,6 +216,11 @@ function mostrarErro(mensagem) {
 
 async function enviar() {
   if (!selecionada || emCooldown()) return;
+  if (!el.campoTurma.value.trim()) {
+    toast("Digite sua turma para enviar o pedido.", "err");
+    el.campoTurma.focus();
+    return;
+  }
 
   el.btnEnviar.disabled = true;
   el.btnEnviar.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Enviando…';
@@ -309,6 +315,9 @@ export function initAluno() {
   el.btnRemoverSel.addEventListener("click", () => limparSelecao());
 
   el.btnEnviar.addEventListener("click", enviar);
+
+  // A turma libera/atualiza o botão de envio conforme o aluno digita.
+  el.campoTurma.addEventListener("input", atualizarBotaoEnviar);
 
   // Fecha o dropdown ao tocar fora.
   document.addEventListener("click", (ev) => {

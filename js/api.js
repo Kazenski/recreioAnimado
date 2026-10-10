@@ -41,9 +41,16 @@ export function loginProfessor(senha) {
   return executar("loginProfessor", { senha });
 }
 
-/** Lista o ranking e os pedidos recentes (requer token do professor). */
-export function listarPedidos(token) {
-  return executar("listarPedidos", { token });
+/**
+ * Lista o ranking e os pedidos recentes (requer token do professor).
+ * opcoes: { turma: "" (todas) | "7º B", top: 10 }.
+ */
+export function listarPedidos(token, opcoes = {}) {
+  return executar("listarPedidos", {
+    token,
+    turma: opcoes.turma || "",
+    top: opcoes.top || 10,
+  });
 }
 
 /** Marca um pedido como pendente/tocada/recusada. */

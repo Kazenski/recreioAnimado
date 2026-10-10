@@ -10,6 +10,26 @@ Todas as alterações relevantes neste projeto são documentadas neste arquivo.
 
 ## [Unreleased] - Em desenvolvimento
 
+## [v1.1.0] — 2026-10-10
+### Adicionado
+- **Painel do professor por turma**: seletor de turma filtra o dashboard (KPIs), o ranking e a lista de pedidos por turma.
+- **Ranking Top 10**: o ranking mostra as 10 músicas mais pedidas — no geral ("Top 10 — geral") e por turma ("Top 10 — 7º B", etc.).
+- **QR Code no painel**: botão no painel do professor abre `/qr.html` para gerar/imprimir o QR code dos alunos.
+- Campo **turma** agora é obrigatório e fica visível no fluxo do aluno (fora do "Adicionar meu nome", que continua opcional).
+
+### Alterado
+- Backend `listarPedidos` aceita `turma` (filtro) e `top` (tamanho do ranking), e devolve a lista de turmas existentes e a turma ativa.
+- Frontend (aluno) exige a turma para habilitar o botão "Enviar pedido".
+
+### Arquivos tocados
+- functions/index.js
+- js/api.js
+- js/aluno.js
+- js/professor.js
+- index.html
+- CHANGELOG.md
+- changelog.json
+
 ## [v1.0.3] — 2026-10-10
 ### Alterado
 - **Experiência mobile-only forçada**: o conteúdo agora fica numa coluna estreita (máx. `30rem`) centralizada e o breakpoint `sm` do Tailwind foi desativado (empurrado para `2200px`). Assim o layout de celular é usado em **qualquer** tela — no desktop o site aparece como um "app de celular".

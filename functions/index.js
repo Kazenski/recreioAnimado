@@ -456,7 +456,13 @@ exports.listarPedidos = onCall(OPCOES_BASE, async (request) => {
   const dados = request.data || {};
   await exigirProfessor(dados.token);
 
+  // `limite`: quantos pedidos recentes entram no cálculo.
+  // `top`: tamanho do ranking devolvido (padrão: Top 10).
+  // `turma`: filtro opcional; vazio = todas as turmas.
   const limite = Math.min(Math.max(parseInt(dados.limite, 10) || 500, 1), 1000);
+  const top = Math.min(Math.max(parseInt(dados.top, 10) || 10, 1), 50);
+  const turmaFiltro = String(dados.turma || '').trim().slice(0, 60);
+
   const snap = await db
     .collection(COL_PEDIDOS)
     .orderBy('criadoEm', 'desc')
@@ -464,7 +470,8 @@ exports.listarPedidos = onCall(OPCOES_BASE, async (request) => {
     .get();
 
   const pedidos = [];
-  const mapa = new Map();
+  const turmas = new Set();
+  let mapa = new Map();
 
   snap.forEach((doc) => {
     const d = doc.data() || {};
@@ -494,23 +501,51 @@ exports.listarPedidos = onCall(OPCOES_BASE, async (request) => {
     atual.total += 1;
     atual.ultimaEm = Math.max(atual.ultimaEm, criadoEm);
     mapa.set(chave, atual);
+
+    const t = (d.turma || '').trim();
+    if (t) turmas.add(t);
   });
 
-  const ranking = Array.from(mapa.values()).sort((a, b) => {
-    if (b.total !== a.total) return b.total - a.total;
-    return b.ultimaEm - a.ultimaEm;
-  });
+  // Filtro por turma: o ranking e o dashboard passam a refletir só essa turma.
+  let lista = pedidos;
+  if (turmaFiltro) {
+    lista = pedidos.filter((p) => p.turma.trim() === turmaFiltro);
+    mapa = new Map();
+    for (const p of lista) {
+      const chave = p.videoId || normalizar(p.musica);
+      const at = mapa.get(chave) || {
+        videoId: p.videoId,
+        musica: p.musica,
+        canal: p.canal,
+        thumb: p.thumb,
+        total: 0,
+        ultimaEm: 0,
+      };
+      at.total += 1;
+      at.ultimaEm = Math.max(at.ultimaEm, p.criadoEm);
+      mapa.set(chave, at);
+    }
+  }
 
-  const tocadas = pedidos.filter((p) => p.status === 'tocada').length;
+  const ranking = Array.from(mapa.values())
+    .sort((a, b) => {
+      if (b.total !== a.total) return b.total - a.total;
+      return b.ultimaEm - a.ultimaEm;
+    })
+    .slice(0, top);
+
+  const tocadas = lista.filter((p) => p.status === 'tocada').length;
 
   return {
     ok: true,
-    total: pedidos.length,
+    total: lista.length,
     tocadas,
-    pendentes: pedidos.length - tocadas,
-    musicasDistintas: ranking.length,
+    pendentes: lista.length - tocadas,
+    musicasDistintas: mapa.size,
     ranking,
-    pedidos,
+    pedidos: lista,
+    turmas: Array.from(turmas).sort((a, b) => a.localeCompare(b, 'pt-BR')),
+    turmaAtiva: turmaFiltro,
     atualizadoEm: agoraISO(),
   };
 });

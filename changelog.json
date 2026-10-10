@@ -1,8 +1,78 @@
 {
-  "geradoEm": "2026-10-10T18:55:05+00:00",
-  "versaoAtual": "1.0.3",
-  "totalEntradas": 4,
+  "geradoEm": "2026-10-10T19:08:55+00:00",
+  "versaoAtual": "1.1.0",
+  "totalEntradas": 5,
   "entradas": [
+    {
+      "versao": "1.1.0",
+      "data": "2026-10-10",
+      "autor": "",
+      "escopo": "",
+      "arquivos": [
+        "functions/index.js",
+        "js/api.js",
+        "js/aluno.js",
+        "js/professor.js",
+        "index.html",
+        "CHANGELOG.md",
+        "changelog.json"
+      ],
+      "secoes": [
+        {
+          "titulo": "Adicionado",
+          "chave": "adicionado",
+          "blocos": [
+            {
+              "titulo": "",
+              "nivel": null,
+              "linhas": [
+                [
+                  "li",
+                  "**Painel do professor por turma**: seletor de turma filtra o dashboard (KPIs), o ranking e a lista de pedidos por turma."
+                ],
+                [
+                  "li",
+                  "**Ranking Top 10**: o ranking mostra as 10 músicas mais pedidas — no geral (\"Top 10 — geral\") e por turma (\"Top 10 — 7º B\", etc.)."
+                ],
+                [
+                  "li",
+                  "**QR Code no painel**: botão no painel do professor abre `/qr.html` para gerar/imprimir o QR code dos alunos."
+                ],
+                [
+                  "li",
+                  "Campo **turma** agora é obrigatório e fica visível no fluxo do aluno (fora do \"Adicionar meu nome\", que continua opcional)."
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          "titulo": "Alterado",
+          "chave": "alterado",
+          "blocos": [
+            {
+              "titulo": "",
+              "nivel": null,
+              "linhas": [
+                [
+                  "li",
+                  "Backend `listarPedidos` aceita `turma` (filtro) e `top` (tamanho do ranking), e devolve a lista de turmas existentes e a turma ativa."
+                ],
+                [
+                  "li",
+                  "Frontend (aluno) exige a turma para habilitar o botão \"Enviar pedido\"."
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          "titulo": "Arquivos tocados",
+          "chave": "arquivos tocados",
+          "blocos": []
+        }
+      ]
+    },
     {
       "versao": "1.0.3",
       "data": "2026-10-10",

@@ -15,6 +15,7 @@ const AUTO_MS = 30000; // atualização automática do painel
 
 let token = null;
 let dados = null;
+let filtroTurma = ""; // "" = todas as turmas
 let autoTimer = null;
 let callbacks = {};
 let el = {};
@@ -50,6 +51,9 @@ function renderKPIs() {
 }
 
 function renderRanking() {
+  el.rankTitulo.textContent = filtroTurma
+    ? "Top 10 — " + filtroTurma
+    : "Top 10 — geral";
   const ranking = (dados && dados.ranking) || [];
   if (!ranking.length) {
     el.listaRanking.innerHTML =
@@ -131,6 +135,18 @@ function renderTudo() {
   renderPedidos();
 }
 
+/** Preenche o seletor de turma preservando a seleção atual. */
+function renderTurmas() {
+  const turmas = (dados && dados.turmas) || [];
+  let html = '<option value="">Todas as turmas</option>';
+  turmas.forEach((t) => {
+    html +=
+      '<option value="' + escapeHtml(t) + '"' +
+      (t === filtroTurma ? " selected" : "") + ">" + escapeHtml(t) + "</option>";
+  });
+  el.selTurma.innerHTML = html;
+}
+
 function mostrarEstado(estado) {
   // estado: "login" | "painel"
   mostrar(el.profLogin, estado === "login");
@@ -144,8 +160,11 @@ async function carregar(silencioso) {
   if (!token) return;
   if (!silencioso) el.rankAtualizado.textContent = "carregando…";
   try {
-    dados = await listarPedidos(token);
+    dados = await listarPedidos(token, { turma: filtroTurma, top: 10 });
+    // Se a turma selecionada sumir (dados apagados), volta para "todas".
+    if (filtroTurma && !(dados.turmas || []).includes(filtroTurma)) filtroTurma = "";
     renderTudo();
+    renderTurmas();
   } catch (erro) {
     if (/sess/i.test(erro.message) || /autentic/i.test(erro.message)) {
       sair(true);
@@ -261,8 +280,10 @@ export function initProfessor(cbs = {}) {
     kpiTocadas: document.getElementById("kpi-tocadas"),
     kpiDistintas: document.getElementById("kpi-distintas"),
     rankAtualizado: document.getElementById("rank-atualizado"),
+    rankTitulo: document.getElementById("rank-titulo"),
     listaRanking: document.getElementById("lista-ranking"),
     listaPedidos: document.getElementById("lista-pedidos"),
+    selTurma: document.getElementById("sel-turma"),
     btnAtualizar: document.getElementById("btn-atualizar"),
     btnLimparTocadas: document.getElementById("btn-limpar-tocadas"),
     btnLimparTudo: document.getElementById("btn-limpar-tudo"),
@@ -272,6 +293,11 @@ export function initProfessor(cbs = {}) {
   el.btnAtualizar.addEventListener("click", () => carregar(false));
   el.btnLimparTocadas.addEventListener("click", () => limpar("tocadas"));
   el.btnLimparTudo.addEventListener("click", () => limpar("tudo"));
+
+  el.selTurma.addEventListener("change", () => {
+    filtroTurma = el.selTurma.value;
+    carregar(false);
+  });
 
   el.listaPedidos.addEventListener("click", (ev) => {
     const botao = ev.target.closest(".acao");
