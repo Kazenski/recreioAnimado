@@ -1,8 +1,48 @@
 {
-  "geradoEm": "2026-10-10T18:05:33+00:00",
-  "versaoAtual": "1.0.0",
-  "totalEntradas": 1,
+  "geradoEm": "2026-10-10T18:29:05+00:00",
+  "versaoAtual": "1.0.1",
+  "totalEntradas": 2,
   "entradas": [
+    {
+      "versao": "1.0.1",
+      "data": "2026-10-10",
+      "autor": "",
+      "escopo": "",
+      "arquivos": [
+        ".firebaserc",
+        "README.md",
+        "firestore.rules",
+        "CHANGELOG.md",
+        "changelog.json"
+      ],
+      "secoes": [
+        {
+          "titulo": "Corrigido",
+          "chave": "corrigido",
+          "blocos": [
+            {
+              "titulo": "",
+              "nivel": null,
+              "linhas": [
+                [
+                  "li",
+                  "Apontado o projeto Firebase padrão em `.firebaserc` para **`recreio-animado-be31b`** (o projeto real, que tem o app Web \"RecreioAnimado\" e o Firestore). Havia um projeto homônimo `recreio-animado` sem app e sem Firestore na conta, que causava confusão no deploy."
+                ],
+                [
+                  "li",
+                  "`README.md` e `firestore.rules` atualizados para citar o `project id` correto."
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          "titulo": "Arquivos tocados",
+          "chave": "arquivos tocados",
+          "blocos": []
+        }
+      ]
+    },
     {
       "versao": "1.0.0",
       "data": "2026-10-10",

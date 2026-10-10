@@ -10,6 +10,18 @@ Todas as alterações relevantes neste projeto são documentadas neste arquivo.
 
 ## [Unreleased] - Em desenvolvimento
 
+## [v1.0.1] — 2026-10-10
+### Corrigido
+- Apontado o projeto Firebase padrão em `.firebaserc` para **`recreio-animado-be31b`** (o projeto real, que tem o app Web "RecreioAnimado" e o Firestore). Havia um projeto homônimo `recreio-animado` sem app e sem Firestore na conta, que causava confusão no deploy.
+- `README.md` e `firestore.rules` atualizados para citar o `project id` correto.
+
+### Arquivos tocados
+- .firebaserc
+- README.md
+- firestore.rules
+- CHANGELOG.md
+- changelog.json
+
 ## [v1.0.0] — 2026-10-10
 ### Escopo
 Primeira versão do **Recreio Animado**: site mobile-first em que o aluno digita o nome de uma música, escolhe a versão correta na lista (autocomplete conectado ao YouTube), valida que ela existe e envia o pedido. O professor entra com uma senha simples e vê o ranking das músicas mais pedidas, além de marcar/limpar pedidos.

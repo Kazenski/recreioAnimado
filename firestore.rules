@@ -9,7 +9,7 @@ rules_version = '2';
 // regras). Isso mantém a senha do professor e o ranking protegidos.
 //
 // Faça o deploy destas regras SOMENTE no projeto Firebase DEDICADO deste app
-// (o padrão em .firebaserc: "recreio-animado"). NÃO faça deploy das regras
+// (o padrão em .firebaserc: "recreio-animado-be31b"). NÃO faça deploy das regras
 // neste arquivo no projeto do site principal (kazenski-a1bb2), ou o site
 // principal perderá o acesso dele ao banco.
 // ============================================================================

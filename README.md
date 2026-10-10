@@ -125,7 +125,7 @@ Você só precisa fazer isso uma vez.
 
 ### 1. Criar o projeto Firebase
 1. Acesse <https://console.firebase.google.com/> e crie um projeto **novo e
-   dedicado** a este app (ex.: `recreio-animado`).
+   dedicado** a este app (ex.: `recreio-animado-be31b`).
    > ⚠️ Não reutilize o projeto do site principal — o `firestore.rules` deste
    > repositório **nega todo acesso** e sobrescreveria as regras de lá.
 2. Em **Criar app → Web**, registre um app e copie o objeto `firebaseConfig`.
@@ -144,8 +144,8 @@ Você só precisa fazer isso uma vez.
 > pesquisado por 24 h no Firestore, então buscas repetidas não gastam cota.
 
 ### 3. Ajustar o projeto local (se necessário)
-O projeto padrão está em `.firebaserc` como `recreio-animado`. Se você criou com
-outro nome, edite `.firebaserc`:
+O projeto padrão está em `.firebaserc` como `recreio-animado-be31b`. Se você criou
+com outro nome, edite `.firebaserc`:
 
 ```json
 { "projects": { "default": "SEU_PROJETO" } }
