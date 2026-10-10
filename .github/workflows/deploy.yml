@@ -1,0 +1,54 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Inject Firebase config from secrets
+        run: |
+          sed -i "s|__VITE_FIREBASE_API_KEY__|${{ secrets.VITE_FIREBASE_API_KEY }}|g" js/firebase.js
+          sed -i "s|__VITE_FIREBASE_AUTH_DOMAIN__|${{ secrets.VITE_FIREBASE_AUTH_DOMAIN }}|g" js/firebase.js
+          sed -i "s|__VITE_FIREBASE_PROJECT_ID__|${{ secrets.VITE_FIREBASE_PROJECT_ID }}|g" js/firebase.js
+          sed -i "s|__VITE_FIREBASE_STORAGE_BUCKET__|${{ secrets.VITE_FIREBASE_STORAGE_BUCKET }}|g" js/firebase.js
+          sed -i "s|__VITE_FIREBASE_MESSAGING_SENDER_ID__|${{ secrets.VITE_FIREBASE_MESSAGING_SENDER_ID }}|g" js/firebase.js
+          sed -i "s|__VITE_FIREBASE_APP_ID__|${{ secrets.VITE_FIREBASE_APP_ID }}|g" js/firebase.js
+
+      - name: Validate JavaScript syntax
+        run: |
+          for f in $(find js -name '*.js'); do
+            cp "$f" "/tmp/$(basename "$f").mjs"
+            node --check "/tmp/$(basename "$f").mjs"
+          done
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

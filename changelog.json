@@ -1,0 +1,166 @@
+{
+  "geradoEm": "2026-10-10T18:05:33+00:00",
+  "versaoAtual": "1.0.0",
+  "totalEntradas": 1,
+  "entradas": [
+    {
+      "versao": "1.0.0",
+      "data": "2026-10-10",
+      "autor": "",
+      "escopo": "Primeira versão do **Recreio Animado**: site mobile-first em que o aluno digita o nome de uma música, escolhe a versão correta na lista (autocomplete conectado ao YouTube), valida que ela existe e envia o pedido. O professor entra com uma senha simples e vê o ranking das músicas mais pedidas, além de marcar/limpar pedidos.",
+      "arquivos": [
+        "index.html",
+        "style.css",
+        "qr.html",
+        "assets/favicon.svg",
+        "js/main.js",
+        "js/firebase.js",
+        "js/api.js",
+        "js/ui.js",
+        "js/aluno.js",
+        "js/professor.js",
+        "functions/index.js",
+        "functions/package.json",
+        "firebase.json",
+        ".firebaserc",
+        "firestore.rules",
+        "firestore.indexes.json",
+        ".github/workflows/deploy.yml",
+        ".env.example",
+        ".gitignore",
+        "tools/build_changelog.py",
+        "README.md",
+        "CHANGELOG.md",
+        "changelog.json"
+      ],
+      "secoes": [
+        {
+          "titulo": "Escopo",
+          "chave": "escopo",
+          "blocos": []
+        },
+        {
+          "titulo": "Adicionado",
+          "chave": "adicionado",
+          "blocos": [
+            {
+              "titulo": "Fluxo do aluno (js/aluno.js, index.html)",
+              "nivel": null,
+              "linhas": [
+                [
+                  "li",
+                  "Campo de busca com **autocomplete** conectado ao YouTube: enquanto o aluno digita (a partir de 2 letras, com debounce de 350 ms), aparece a lista com capa, título completo e canal para ele **selecionar**."
+                ],
+                [
+                  "li",
+                  "Navegação por teclado (setas ↑/↓ e Enter) e por toque, pensada para celular."
+                ],
+                [
+                  "li",
+                  "Cartão de confirmação da música selecionada e botão **Enviar pedido**."
+                ],
+                [
+                  "li",
+                  "Tela de sucesso animada, mensagens de erro amigáveis e *cooldown* de 20 s entre pedidos do mesmo aparelho."
+                ],
+                [
+                  "li",
+                  "Campos opcionais de nome e turma do aluno."
+                ]
+              ]
+            },
+            {
+              "titulo": "Painel do professor (js/professor.js)",
+              "nivel": null,
+              "linhas": [
+                [
+                  "li",
+                  "**Login com senha simples** (a senha nunca sai do servidor)."
+                ],
+                [
+                  "li",
+                  "KPIs: total de pedidos, pendentes, tocadas e músicas distintas."
+                ],
+                [
+                  "li",
+                  "**Ranking das mais pedidas** com barras proporcionais e pódio (1º, 2º, 3º)."
+                ],
+                [
+                  "li",
+                  "Lista de pedidos recentes com ações para marcar como **tocada**, **recusada** ou voltar para **pendente**."
+                ],
+                [
+                  "li",
+                  "Limpeza de pedidos tocados ou de todos, atualização manual e automática (30 s)."
+                ]
+              ]
+            },
+            {
+              "titulo": "Backend (functions/index.js)",
+              "nivel": null,
+              "linhas": [
+                [
+                  "li",
+                  "`buscarMusica`: busca/valida no YouTube via **YouTube Data API v3**, com **cache no Firestore** para economizar cota e proteger a chave."
+                ],
+                [
+                  "li",
+                  "`registrarPedido`: valida a música (inclusive links colados), grava o pedido no Firestore e aplica controle anti-flood."
+                ],
+                [
+                  "li",
+                  "`loginProfessor`, `listarPedidos`, `definirStatusPedido` e `limparPedidos`: painel protegido por token de sessão com validade de 12 h."
+                ],
+                [
+                  "li",
+                  "Chave do YouTube (`YOUTUBE_API_KEY`) e senha do professor (`PROF_SENHA`) guardadas como **segredos** no servidor."
+                ]
+              ]
+            },
+            {
+              "titulo": "Interface e identidade",
+              "nivel": null,
+              "linhas": [
+                [
+                  "li",
+                  "Layout **mobile-first** responsivo (Tailwind via CDN + `style.css`), tema roxo/rosa, animações discretas e respeito a `prefers-reduced-motion`."
+                ],
+                [
+                  "li",
+                  "`qr.html`: gerador de **QR Code** do site para imprimir e afixar no pátio."
+                ]
+              ]
+            },
+            {
+              "titulo": "Projeto e infraestrutura",
+              "nivel": null,
+              "linhas": [
+                [
+                  "li",
+                  "`firebase.json`, `.firebaserc`, `firestore.rules` (nega acesso direto do cliente), `firestore.indexes.json`."
+                ],
+                [
+                  "li",
+                  "Workflow do **GitHub Pages** (`.github/workflows/deploy.yml`) com injeção da configuração do Firebase via Secrets e validação de sintaxe dos `.js`."
+                ],
+                [
+                  "li",
+                  "`tools/build_changelog.py` (gera `changelog.json` a partir deste arquivo)."
+                ],
+                [
+                  "li",
+                  "`README.md` completo (visão geral, arquitetura, setup, deploy e QR Code)."
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          "titulo": "Arquivos tocados",
+          "chave": "arquivos tocados",
+          "blocos": []
+        }
+      ]
+    }
+  ]
+}

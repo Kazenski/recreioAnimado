@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#6d28d9" />
+  <title>QR Code — Recreio Animado</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <style>
+    :root { --r: #7c3aed; --f: #f43f5e; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100dvh; font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      display: grid; place-items: center; padding: 20px;
+      background: radial-gradient(120% 120% at 15% 0%, #4c1d95, #1e1b4b);
+      color: #1e293b;
+    }
+    .card {
+      width: 100%; max-width: 440px; background: #fff; border-radius: 22px; padding: 22px;
+      box-shadow: 0 24px 60px -24px rgba(0,0,0,.7); text-align: center;
+    }
+    h1 { font-size: 1.25rem; margin: 0 0 4px; }
+    p.sub { margin: 0 0 18px; color: #64748b; font-size: .85rem; }
+    #qr { display: grid; place-items: center; margin: 0 auto 16px; padding: 14px; background: #fff; border-radius: 14px; }
+    #qr img, #qr canvas { display: block; }
+    label { display: block; text-align: left; font-size: .72rem; font-weight: 700; color: #64748b; margin-bottom: 4px; text-transform: uppercase; letter-spacing: .04em; }
+    input {
+      width: 100%; padding: 11px 12px; border-radius: 12px; border: 2px solid #ede9fe;
+      font-size: .9rem; outline: none;
+    }
+    input:focus { border-color: #a78bfa; }
+    .row { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+    button {
+      flex: 1; min-width: 120px; cursor: pointer; border: 0; border-radius: 12px; padding: 12px;
+      font-weight: 700; font-size: .9rem; color: #fff;
+      background: linear-gradient(135deg, var(--r), var(--f));
+    }
+    button.ghost { background: #f1f5f9; color: #4c1d95; }
+    .aviso { margin-top: 14px; font-size: .75rem; color: #94a3b8; }
+    a { color: var(--r); }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1><i class="fa-solid fa-qrcode"></i> QR do recreio</h1>
+    <p class="sub">Imprima e cole na parede. Os alunos escaneiam e caem direto na página de pedidos.</p>
+
+    <div id="qr"></div>
+
+    <label for="url">Endereço do site</label>
+    <input id="url" type="url" />
+
+    <div class="row">
+      <button id="btn-gerar"><i class="fa-solid fa-rotate"></i> Gerar</button>
+      <button id="btn-baixar" class="ghost"><i class="fa-solid fa-download"></i> Baixar PNG</button>
+      <button id="btn-imprimir" class="ghost"><i class="fa-solid fa-print"></i> Imprimir</button>
+    </div>
+
+    <p class="aviso">Dica: use o endereço do GitHub Pages deste projeto.<br />
+      <a href="./">&larr; Voltar para os pedidos</a>
+    </p>
+  </div>
+
+  <script>
+    let qr = null;
+
+    function urlPadrao() {
+      // Sempre aponta para a página de pedidos (raiz do site).
+      return location.origin + location.pathname.replace(/qr\.html?$/, "");
+    }
+
+    function gerar(texto) {
+      const alvo = document.getElementById("qr");
+      alvo.innerHTML = "";
+      qr = new QRCode(alvo, {
+        text: texto,
+        width: 240,
+        height: 240,
+        colorDark: "#1e1b4b",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.M
+      });
+    }
+
+    document.getElementById("url").value = urlPadrao();
+    gerar(urlPadrao());
+
+    document.getElementById("btn-gerar").addEventListener("click", () => {
+      const v = document.getElementById("url").value.trim();
+      if (v) gerar(v);
+    });
+
+    document.getElementById("btn-baixar").addEventListener("click", () => {
+      const cont = document.getElementById("qr");
+      const canvas = cont.querySelector("canvas");
+      const img = cont.querySelector("img");
+      const src = canvas ? canvas.toDataURL("image/png") : (img ? img.src : "");
+      if (!src) return;
+      const a = document.createElement("a");
+      a.href = src;
+      a.download = "qrcode-recreio-animado.png";
+      a.click();
+    });
+
+    document.getElementById("btn-imprimir").addEventListener("click", () => window.print());
+  </script>
+</body>
+</html>

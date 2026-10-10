@@ -1,0 +1,17 @@
+{
+  "name": "recreio-functions",
+  "description": "Cloud Functions do Recreio Animado (busca no YouTube, pedidos e painel do professor)",
+  "main": "index.js",
+  "private": true,
+  "engines": {
+    "node": "20"
+  },
+  "scripts": {
+    "serve": "firebase emulators:start --only functions,firestore",
+    "logs": "firebase functions:log"
+  },
+  "dependencies": {
+    "firebase-admin": "^12.6.0",
+    "firebase-functions": "^5.1.1"
+  }
+}
