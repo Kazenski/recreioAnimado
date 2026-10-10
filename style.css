@@ -24,6 +24,8 @@ body {
     radial-gradient(120% 120% at 15% 0%, #4c1d95 0%, #2e1065 45%, #1e1b4b 100%);
   position: relative;
   overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+  overscroll-behavior-y: none;
 }
 
 /* Fundo animado suave ---------------------------------------------------- */
@@ -199,6 +201,7 @@ body {
 }
 
 /* Toasts ----------------------------------------------------------------- */
+#toasts { bottom: calc(1rem + env(safe-area-inset-bottom)); }
 .toast {
   pointer-events: auto;
   max-width: 22rem;

@@ -18,7 +18,12 @@
   <script>
     tailwind.config = {
       theme: {
+        // O site é MOBILE-ONLY. Empurramos o breakpoint `sm` para um valor
+        // inalcançável para que o layout do celular seja usado em QUALQUER tela.
+        // No desktop o conteúdo fica numa coluna estreita e centralizada.
+        screens: { sm: '2200px' },
         extend: {
+          maxWidth: { app: '30rem' },
           fontFamily: {
             display: ['"Baloo 2"', 'system-ui', 'sans-serif'],
             sans: ['Inter', 'system-ui', 'sans-serif']
@@ -55,7 +60,7 @@
 
   <!-- ===================== CABEÇALHO ===================== -->
   <header class="relative z-20">
-    <div class="mx-auto max-w-2xl px-4 pt-5 pb-2 flex items-center justify-between gap-3">
+    <div class="mx-auto max-w-app px-4 pt-5 pb-2 flex items-center justify-between gap-3">
       <a href="./" class="flex items-center gap-2.5 min-w-0">
         <span class="logo-badge">
           <i class="fa-solid fa-music"></i>
@@ -82,7 +87,7 @@
     </div>
   </header>
 
-  <main class="relative z-10 mx-auto max-w-2xl px-4 pb-24">
+  <main class="relative z-10 mx-auto max-w-app px-4 pb-24">
 
     <!-- ===================== ALUNO ===================== -->
     <section id="view-aluno" class="view">
@@ -156,9 +161,9 @@
           </summary>
           <div class="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2">
             <input id="campo-nome" type="text" placeholder="Seu nome" maxlength="60"
-              class="rounded-xl border-2 border-recreio-100 focus:border-recreio-400 outline-none px-3 py-2.5 text-sm" />
+              class="rounded-xl border-2 border-recreio-100 focus:border-recreio-400 outline-none px-3 py-2.5 text-base" />
             <input id="campo-turma" type="text" placeholder="Turma (ex.: 7º B)" maxlength="60"
-              class="rounded-xl border-2 border-recreio-100 focus:border-recreio-400 outline-none px-3 py-2.5 text-sm" />
+              class="rounded-xl border-2 border-recreio-100 focus:border-recreio-400 outline-none px-3 py-2.5 text-base" />
           </div>
         </details>
 
@@ -249,9 +254,9 @@
   </main>
 
   <!-- ===================== TOASTS ===================== -->
-  <div id="toasts" class="fixed inset-x-0 bottom-4 z-50 flex flex-col items-center gap-2 px-4 pointer-events-none"></div>
+  <div id="toasts" class="fixed inset-x-0 z-50 mx-auto max-w-app flex flex-col items-center gap-2 px-4 pointer-events-none"></div>
 
-  <footer class="relative z-10 pb-6 text-center text-[11px] text-recreio-100/50">
+  <footer class="relative z-10 mx-auto max-w-app px-4 pb-[calc(1.5rem+env(safe-area-inset-bottom))] text-center text-[11px] text-recreio-100/50">
     Recreio Animado · <a class="underline hover:text-white" href="qr.html">QR Code</a> ·
     <a id="link-versao" class="underline hover:text-white" href="CHANGELOG.md">v1.0.2</a>
   </footer>

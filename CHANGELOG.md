@@ -10,6 +10,19 @@ Todas as alterações relevantes neste projeto são documentadas neste arquivo.
 
 ## [Unreleased] - Em desenvolvimento
 
+## [v1.0.3] — 2026-10-10
+### Alterado
+- **Experiência mobile-only forçada**: o conteúdo agora fica numa coluna estreita (máx. `30rem`) centralizada e o breakpoint `sm` do Tailwind foi desativado (empurrado para `2200px`). Assim o layout de celular é usado em **qualquer** tela — no desktop o site aparece como um "app de celular".
+- Campos de nome/turma com fonte de `16px` (`text-base`) para evitar o zoom automático do iOS ao focar.
+- Espaçamento seguro para celulares com notch/home indicator (`env(safe-area-inset-bottom)`) no rodapé e nos toasts.
+- Rodapé e toasts alinhados à mesma largura do conteúdo.
+
+### Arquivos tocados
+- index.html
+- style.css
+- CHANGELOG.md
+- changelog.json
+
 ## [v1.0.2] — 2026-10-10
 ### Alterado
 - Rodapé agora mostra a versão **dinamicamente** a partir do `changelog.json` (`versaoAtual`), mantendo o link para o `CHANGELOG.md`. Assim a versão exibida nunca fica defasada em relação ao changelog. Se o `fetch` falhar, mantém o texto estático como reserva.

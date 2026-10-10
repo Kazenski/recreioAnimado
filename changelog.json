@@ -1,8 +1,55 @@
 {
-  "geradoEm": "2026-10-10T18:46:15+00:00",
-  "versaoAtual": "1.0.2",
-  "totalEntradas": 3,
+  "geradoEm": "2026-10-10T18:55:05+00:00",
+  "versaoAtual": "1.0.3",
+  "totalEntradas": 4,
   "entradas": [
+    {
+      "versao": "1.0.3",
+      "data": "2026-10-10",
+      "autor": "",
+      "escopo": "",
+      "arquivos": [
+        "index.html",
+        "style.css",
+        "CHANGELOG.md",
+        "changelog.json"
+      ],
+      "secoes": [
+        {
+          "titulo": "Alterado",
+          "chave": "alterado",
+          "blocos": [
+            {
+              "titulo": "",
+              "nivel": null,
+              "linhas": [
+                [
+                  "li",
+                  "**Experiência mobile-only forçada**: o conteúdo agora fica numa coluna estreita (máx. `30rem`) centralizada e o breakpoint `sm` do Tailwind foi desativado (empurrado para `2200px`). Assim o layout de celular é usado em **qualquer** tela — no desktop o site aparece como um \"app de celular\"."
+                ],
+                [
+                  "li",
+                  "Campos de nome/turma com fonte de `16px` (`text-base`) para evitar o zoom automático do iOS ao focar."
+                ],
+                [
+                  "li",
+                  "Espaçamento seguro para celulares com notch/home indicator (`env(safe-area-inset-bottom)`) no rodapé e nos toasts."
+                ],
+                [
+                  "li",
+                  "Rodapé e toasts alinhados à mesma largura do conteúdo."
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          "titulo": "Arquivos tocados",
+          "chave": "arquivos tocados",
+          "blocos": []
+        }
+      ]
+    },
     {
       "versao": "1.0.2",
       "data": "2026-10-10",
