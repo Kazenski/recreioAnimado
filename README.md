@@ -1,4 +1,4 @@
-# 🎵 Recreio Animado
+# Recreio Animado
 
 > Site mobile-first em que os alunos escaneiam um QR Code, digitam o nome de uma
 > música, escolhem a versão correta (autocomplete do YouTube), validam que ela
@@ -20,7 +20,7 @@
 
 ---
 
-## 📖 Como funciona
+## Como funciona
 
 ### Para o aluno (sem login)
 1. Escaneia o QR Code afixado no pátio e abre o site no celular.
@@ -41,7 +41,7 @@
 
 ---
 
-## 🧱 Estrutura do projeto
+## Estrutura do projeto
 
 ```text
 /
@@ -81,7 +81,7 @@
 
 ---
 
-## 🛠️ Stack
+## Stack
 
 | Camada | Tecnologia |
 |--------|------------|
@@ -95,7 +95,7 @@
 
 ---
 
-## 🏗️ Arquitetura
+## Arquitetura
 
 O site no GitHub Pages é **estático** — por segurança, ele não guarda a chave do
 YouTube nem a senha do professor. Toda a parte sensível roda nas **Cloud
@@ -116,87 +116,6 @@ Functions**, que falam com o YouTube e com o Firestore.
 - A **chave do YouTube** e a **senha do professor** são *segredos* do servidor.
 - O navegador **nunca** acessa o Firestore diretamente (`firestore.rules` nega
   tudo); só as funções (Admin SDK) leem e escrevem.
-
----
-
-## 🚀 Configuração (passo a passo)
-
-Você só precisa fazer isso uma vez.
-
-### 1. Criar o projeto Firebase
-1. Acesse <https://console.firebase.google.com/> e crie um projeto **novo e
-   dedicado** a este app (ex.: `recreio-animado-be31b`).
-   > ⚠️ Não reutilize o projeto do site principal — o `firestore.rules` deste
-   > repositório **nega todo acesso** e sobrescreveria as regras de lá.
-2. Em **Criar app → Web**, registre um app e copie o objeto `firebaseConfig`.
-3. Em **Build → Firestore Database**, crie o banco (modo produção).
-
-### 2. Criar a chave da YouTube Data API v3
-1. No <https://console.cloud.google.com/> (mesmo projeto do Firebase) vá em
-   **APIs e serviços → Biblioteca** e ative **YouTube Data API v3**.
-2. Em **Credenciais → Criar credenciais → Chave de API**, crie a chave.
-3. **Não** restrinja por *referrer*: as chamadas saem do servidor. Você pode
-   restringir por **API** (só a YouTube Data API v3) para mais segurança.
-4. Guarde a chave — ela será um segredo no passo 4.
-
-> 💡 **Cota:** a busca do YouTube consome 100 unidades por chamada e a cota
-> padrão é de 10.000/dia (≈100 buscas). O backend **guarda em cache** cada termo
-> pesquisado por 24 h no Firestore, então buscas repetidas não gastam cota.
-
-### 3. Ajustar o projeto local (se necessário)
-O projeto padrão está em `.firebaserc` como `recreio-animado-be31b`. Se você criou
-com outro nome, edite `.firebaserc`:
-
-```json
-{ "projects": { "default": "SEU_PROJETO" } }
-```
-
-### 4. Configurar os segredos do servidor
-Com a Firebase CLI instalada (`npm i -g firebase-tools`) e logado
-(`firebase login`), rode **dentro da pasta do projeto**:
-
-```bash
-firebase functions:secrets:set YOUTUBE_API_KEY   # cole a chave do passo 2
-firebase functions:secrets:set PROF_SENHA        # senha do painel do professor
-```
-
-### 5. Publicar as Cloud Functions e as regras
-
-```bash
-cd functions
-npm install
-cd ..
-firebase deploy --only functions,firestore
-```
-
-Isso publica as 6 funções (`buscarMusica`, `registrarPedido`, `loginProfessor`,
-`listarPedidos`, `definirStatusPedido`, `limparPedidos`) e as regras do
-Firestore.
-
-### 6. Configurar os Secrets do GitHub (para o site)
-No repositório **Kazenski/recreioAnimado → Settings → Secrets and variables →
-Actions**, crie estes 6 secrets com os valores do `firebaseConfig` (passo 1):
-
-| Secret | Onde achar no `firebaseConfig` |
-|--------|--------------------------------|
-| `VITE_FIREBASE_API_KEY` | `apiKey` |
-| `VITE_FIREBASE_AUTH_DOMAIN` | `authDomain` |
-| `VITE_FIREBASE_PROJECT_ID` | `projectId` |
-| `VITE_FIREBASE_STORAGE_BUCKET` | `storageBucket` |
-| `VITE_FIREBASE_MESSAGING_SENDER_ID` | `messagingSenderId` |
-| `VITE_FIREBASE_APP_ID` | `appId` |
-
-> Esses valores são **públicos** (aparecem no navegador). O que é secreto
-> (chave do YouTube e senha) fica só no Firebase, no passo 4.
-
-### 7. Ativar o GitHub Pages
-Em **Settings → Pages**, defina **Source: GitHub Actions**. A cada `push` na
-branch `main`, o workflow publica o site em
-`https://kazenski.github.io/recreioAnimado/`.
-
-### 8. Gerar o QR Code
-Abra `https://kazenski.github.io/recreioAnimado/qr.html`, confirme o endereço e
-baixe/imprima o QR Code.
 
 ---
 
@@ -232,7 +151,7 @@ firebase emulators:start --only functions,firestore
 
 ---
 
-## 🔌 Referência das Cloud Functions
+## Referência das Cloud Functions
 
 Todas são *HTTPS Callable* na região **`us-central1`** (valor em `js/firebase.js`
 — se mudar a região, mude nos dois lugares).
@@ -248,7 +167,7 @@ Todas são *HTTPS Callable* na região **`us-central1`** (valor em `js/firebase.
 
 ---
 
-## 🗄️ Modelo de dados (Firestore)
+## Modelo de dados (Firestore)
 
 | Coleção | Documento | Campos principais |
 |---------|-----------|-------------------|
@@ -259,7 +178,7 @@ Todas são *HTTPS Callable* na região **`us-central1`** (valor em `js/firebase.
 
 ---
 
-## 🔐 Segurança
+## Segurança
 
 - A chave do YouTube e a senha do professor vivem **apenas** no servidor
   (Firebase Secrets).
@@ -272,7 +191,7 @@ Todas são *HTTPS Callable* na região **`us-central1`** (valor em `js/firebase.
 
 ---
 
-## 📝 Versionamento e Changelog
+## Versionamento e Changelog
 
 - **`CHANGELOG.md` é append-only**: cada versão nova entra **no topo** (abaixo de
   `## [Unreleased]`). Nunca apague nem reescreva entradas antigas.
@@ -303,7 +222,7 @@ verdade é sempre o Markdown).
 
 ---
 
-## 🧰 Comandos úteis
+## Comandos úteis
 
 ```bash
 # Servir o site localmente
@@ -324,7 +243,7 @@ firebase emulators:start --only functions,firestore
 
 ---
 
-## 🩺 Problemas comuns
+## Problemas comuns
 
 | Sintoma | Causa provável | Solução |
 |---------|----------------|---------|
@@ -336,7 +255,7 @@ firebase emulators:start --only functions,firestore
 
 ---
 
-## 📄 Licença
+## Licença
 
 Projeto educacional — **Recreio Animado / Prof. Kazenski 2026**.
 Uso interno da instituição. Não redistribuir sem autorização.
