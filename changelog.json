@@ -1,8 +1,74 @@
 {
-  "geradoEm": "2026-10-10T19:08:55+00:00",
-  "versaoAtual": "1.1.0",
-  "totalEntradas": 5,
+  "geradoEm": "2026-10-10T19:45:44+00:00",
+  "versaoAtual": "1.2.0",
+  "totalEntradas": 6,
   "entradas": [
+    {
+      "versao": "1.2.0",
+      "data": "2026-10-10",
+      "autor": "",
+      "escopo": "",
+      "arquivos": [
+        "functions/index.js",
+        "js/api.js",
+        "js/aluno.js",
+        "js/professor.js",
+        "index.html",
+        "CHANGELOG.md",
+        "changelog.json"
+      ],
+      "secoes": [
+        {
+          "titulo": "Adicionado",
+          "chave": "adicionado",
+          "blocos": [
+            {
+              "titulo": "",
+              "nivel": null,
+              "linhas": [
+                [
+                  "li",
+                  "**Cadastro oficial de turmas**: o professor pode cadastrar e remover turmas no painel (novo card \"Turmas\")."
+                ],
+                [
+                  "li",
+                  "**Seletor de turma no aluno**: o campo de turma virou um seletor alimentado pelas turmas cadastradas (e recarrega ao abrir)."
+                ],
+                [
+                  "li",
+                  "Novas callables: `listarTurmas` (público), `criarTurma` e `removerTurma` (professor)."
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          "titulo": "Alterado",
+          "chave": "alterado",
+          "blocos": [
+            {
+              "titulo": "",
+              "nivel": null,
+              "linhas": [
+                [
+                  "li",
+                  "O filtro do painel passa a incluir as turmas cadastradas além das encontradas nos pedidos."
+                ],
+                [
+                  "li",
+                  "Turmas duplicadas (ignorando maiúsculas e acentos) são rejeitadas no cadastro."
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          "titulo": "Arquivos tocados",
+          "chave": "arquivos tocados",
+          "blocos": []
+        }
+      ]
+    },
     {
       "versao": "1.1.0",
       "data": "2026-10-10",

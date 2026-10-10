@@ -2,7 +2,7 @@
 // Fluxo do ALUNO: busca com autocomplete no YouTube, seleção e envio do pedido.
 // ============================================================================
 
-import { buscarMusica, registrarPedido } from "./api.js";
+import { buscarMusica, registrarPedido, listarTurmas } from "./api.js";
 import { FIREBASE_CONFIGURADO } from "./firebase.js";
 import { escapeHtml, toast, mostrar } from "./ui.js";
 
@@ -162,6 +162,31 @@ function limparSelecao(limparCampo = true) {
 }
 
 // ---------------------------------------------------------------------------
+// Turmas (seletor)
+// ---------------------------------------------------------------------------
+function preencherTurmas(turmas) {
+  el.campoTurma.innerHTML =
+    '<option value="" disabled selected>Escolha sua turma…</option>';
+  (turmas || []).forEach((t) => {
+    const opt = document.createElement("option");
+    opt.value = t;
+    opt.textContent = t;
+    el.campoTurma.appendChild(opt);
+  });
+  atualizarBotaoEnviar();
+}
+
+async function carregarTurmas() {
+  try {
+    const r = await listarTurmas();
+    preencherTurmas(r.turmas || []);
+  } catch (erro) {
+    preencherTurmas([]);
+    toast("Não foi possível carregar as turmas. Recarregue a página.", "err");
+  }
+}
+
+// ---------------------------------------------------------------------------
 // Envio
 // ---------------------------------------------------------------------------
 function emCooldown() {
@@ -217,7 +242,7 @@ function mostrarErro(mensagem) {
 async function enviar() {
   if (!selecionada || emCooldown()) return;
   if (!el.campoTurma.value.trim()) {
-    toast("Digite sua turma para enviar o pedido.", "err");
+    toast("Escolha sua turma para enviar o pedido.", "err");
     el.campoTurma.focus();
     return;
   }
@@ -316,8 +341,13 @@ export function initAluno() {
 
   el.btnEnviar.addEventListener("click", enviar);
 
-  // A turma libera/atualiza o botão de envio conforme o aluno digita.
+  // A turma escolhida atualiza o botão de envio.
   el.campoTurma.addEventListener("input", atualizarBotaoEnviar);
+  el.campoTurma.addEventListener("change", atualizarBotaoEnviar);
+
+  // Recarrega as turmas ao abrir o seletor (professor pode ter cadastrado novas).
+  el.campoTurma.addEventListener("focus", carregarTurmas);
+  el.campoTurma.addEventListener("click", carregarTurmas);
 
   // Fecha o dropdown ao tocar fora.
   document.addEventListener("click", (ev) => {
@@ -327,6 +357,7 @@ export function initAluno() {
   });
 
   atualizarBotaoEnviar();
+  if (FIREBASE_CONFIGURADO) carregarTurmas();
 
   if (!FIREBASE_CONFIGURADO) {
     mostrarErro(

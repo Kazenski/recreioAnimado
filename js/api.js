@@ -62,3 +62,18 @@ export function definirStatusPedido(token, id, status) {
 export function limparPedidos(token, modo) {
   return executar("limparPedidos", { token, modo });
 }
+
+/** Lista as turmas cadastradas (público — alimenta o seletor do aluno). */
+export function listarTurmas() {
+  return executar("listarTurmas", {});
+}
+
+/** Cadastra uma turma (professor). Devolve a lista atualizada. */
+export function criarTurma(token, nome) {
+  return executar("criarTurma", { token, nome });
+}
+
+/** Remove uma turma cadastrada (professor). Devolve a lista atualizada. */
+export function removerTurma(token, nome) {
+  return executar("removerTurma", { token, nome });
+}

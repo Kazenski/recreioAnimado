@@ -11,6 +11,9 @@
  *   - listarPedidos       -> devolve o ranking + pedidos recentes (professor)
  *   - definirStatusPedido -> marca um pedido como tocada/recusada (professor)
  *   - limparPedidos       -> apaga pedidos tocados ou todos (professor)
+ *   - listarTurmas        -> devolve as turmas cadastradas (público)
+ *   - criarTurma          -> cadastra uma turma (professor)
+ *   - removerTurma        -> remove uma turma cadastrada (professor)
  *
  * Segredos necessários (NÃO ficam no código):
  *   firebase functions:secrets:set YOUTUBE_API_KEY
@@ -68,6 +71,7 @@ const COL_PEDIDOS = 'pedidosRecreio';
 const COL_CACHE = 'cacheBuscas';
 const COL_SESSOES = 'sessoesProfessor';
 const COL_CONTROLE = 'controlePedidos';
+const COL_TURMAS = 'turmasRecreio';
 
 /** Regras de nome de música. */
 const MIN_MUSICA = 2;
@@ -545,6 +549,7 @@ exports.listarPedidos = onCall(OPCOES_BASE, async (request) => {
     ranking,
     pedidos: lista,
     turmas: Array.from(turmas).sort((a, b) => a.localeCompare(b, 'pt-BR')),
+    turmasCadastradas: await listarTurmasCadastradas(),
     turmaAtiva: turmaFiltro,
     atualizadoEm: agoraISO(),
   };
@@ -607,4 +612,70 @@ exports.limparPedidos = onCall(OPCOES_BASE, async (request) => {
   if (noBatch > 0) await batch.commit();
 
   return { ok: true, removidos, modo };
+});
+
+// ---------------------------------------------------------------------------
+// 7) Turmas cadastradas (professor cadastra; aluno escolhe no seletor)
+// ---------------------------------------------------------------------------
+
+const MIN_TURMA = 2;
+const MAX_TURMA = 40;
+
+/** Devolve a lista de turmas cadastradas, em ordem alfabética (pt-BR). */
+async function listarTurmasCadastradas() {
+  const snap = await db.collection(COL_TURMAS).get();
+  const nomes = [];
+  snap.forEach((doc) => {
+    const nome = String((doc.data() || {}).nome || '').trim();
+    if (nome) nomes.push(nome);
+  });
+  return nomes.sort((a, b) => a.localeCompare(b, 'pt-BR'));
+}
+
+exports.listarTurmas = onCall(OPCOES_BASE, async () => {
+  return { ok: true, turmas: await listarTurmasCadastradas() };
+});
+
+exports.criarTurma = onCall(OPCOES_BASE, async (request) => {
+  const dados = request.data || {};
+  await exigirProfessor(dados.token);
+
+  const nome = String(dados.nome || '').trim().slice(0, MAX_TURMA);
+  if (nome.length < MIN_TURMA) {
+    throw new HttpsError(
+      'invalid-argument',
+      'Digite o nome da turma (mínimo 2 caracteres).'
+    );
+  }
+
+  const ref = db.collection(COL_TURMAS).doc(chaveCache(nome));
+  const existe = await ref.get();
+  if (existe.exists) {
+    throw new HttpsError('already-exists', 'Essa turma já está cadastrada.');
+  }
+
+  await ref.set({
+    nome,
+    criadoEm: FieldValue.serverTimestamp(),
+  });
+  return { ok: true, turmas: await listarTurmasCadastradas() };
+});
+
+exports.removerTurma = onCall(OPCOES_BASE, async (request) => {
+  const dados = request.data || {};
+  await exigirProfessor(dados.token);
+
+  const nome = String(dados.nome || '').trim();
+  if (!nome) {
+    throw new HttpsError('invalid-argument', 'Turma não informada.');
+  }
+
+  const ref = db.collection(COL_TURMAS).doc(chaveCache(nome));
+  const existe = await ref.get();
+  if (!existe.exists) {
+    throw new HttpsError('not-found', 'Turma não encontrada.');
+  }
+
+  await ref.delete();
+  return { ok: true, turmas: await listarTurmasCadastradas() };
 });

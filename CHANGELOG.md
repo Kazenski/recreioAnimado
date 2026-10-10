@@ -10,6 +10,25 @@ Todas as alterações relevantes neste projeto são documentadas neste arquivo.
 
 ## [Unreleased] - Em desenvolvimento
 
+## [v1.2.0] — 2026-10-10
+### Adicionado
+- **Cadastro oficial de turmas**: o professor pode cadastrar e remover turmas no painel (novo card "Turmas").
+- **Seletor de turma no aluno**: o campo de turma virou um seletor alimentado pelas turmas cadastradas (e recarrega ao abrir).
+- Novas callables: `listarTurmas` (público), `criarTurma` e `removerTurma` (professor).
+
+### Alterado
+- O filtro do painel passa a incluir as turmas cadastradas além das encontradas nos pedidos.
+- Turmas duplicadas (ignorando maiúsculas e acentos) são rejeitadas no cadastro.
+
+### Arquivos tocados
+- functions/index.js
+- js/api.js
+- js/aluno.js
+- js/professor.js
+- index.html
+- CHANGELOG.md
+- changelog.json
+
 ## [v1.1.0] — 2026-10-10
 ### Adicionado
 - **Painel do professor por turma**: seletor de turma filtra o dashboard (KPIs), o ranking e a lista de pedidos por turma.

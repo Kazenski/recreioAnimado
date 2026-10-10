@@ -7,6 +7,8 @@ import {
   listarPedidos,
   definirStatusPedido,
   limparPedidos,
+  criarTurma,
+  removerTurma,
 } from "./api.js";
 import { escapeHtml, toast, mostrar, formatarData } from "./ui.js";
 
@@ -16,6 +18,7 @@ const AUTO_MS = 30000; // atualização automática do painel
 let token = null;
 let dados = null;
 let filtroTurma = ""; // "" = todas as turmas
+let turmasCadastradas = []; // turmas do cadastro oficial (painel + seletor do aluno)
 let autoTimer = null;
 let callbacks = {};
 let el = {};
@@ -135,16 +138,35 @@ function renderTudo() {
   renderPedidos();
 }
 
-/** Preenche o seletor de turma preservando a seleção atual. */
+/** Preenche o seletor de turma (cadastradas + pedidos existentes). */
 function renderTurmas() {
-  const turmas = (dados && dados.turmas) || [];
+  const conjunto = new Set([...(dados && dados.turmas) || [], ...turmasCadastradas]);
+  const lista = Array.from(conjunto).sort((a, b) => a.localeCompare(b, "pt-BR"));
   let html = '<option value="">Todas as turmas</option>';
-  turmas.forEach((t) => {
+  lista.forEach((t) => {
     html +=
       '<option value="' + escapeHtml(t) + '"' +
       (t === filtroTurma ? " selected" : "") + ">" + escapeHtml(t) + "</option>";
   });
   el.selTurma.innerHTML = html;
+}
+
+/** Lista as turmas cadastradas com botão para remover. */
+function renderListaTurmas() {
+  if (!turmasCadastradas.length) {
+    el.listaTurmas.innerHTML =
+      '<p class="text-sm text-slate-400 text-center py-3">Nenhuma turma cadastrada ainda. Adicione acima.</p>';
+    return;
+  }
+  el.listaTurmas.innerHTML = turmasCadastradas
+    .map(
+      (t) =>
+        '<div class="flex items-center justify-between gap-2 rounded-xl border border-slate-100 px-3 py-2">' +
+          '<span class="text-sm font-semibold text-slate-700">' + escapeHtml(t) + "</span>" +
+          '<button type="button" class="acao-turma p-1.5 text-slate-400 hover:text-festa-500 rounded-lg" data-turma="' + escapeHtml(t) + '" title="Remover turma"><i class="fa-solid fa-trash-can"></i></button>' +
+        "</div>"
+    )
+    .join("");
 }
 
 function mostrarEstado(estado) {
@@ -161,10 +183,12 @@ async function carregar(silencioso) {
   if (!silencioso) el.rankAtualizado.textContent = "carregando…";
   try {
     dados = await listarPedidos(token, { turma: filtroTurma, top: 10 });
+    turmasCadastradas = dados.turmasCadastradas || [];
     // Se a turma selecionada sumir (dados apagados), volta para "todas".
     if (filtroTurma && !(dados.turmas || []).includes(filtroTurma)) filtroTurma = "";
     renderTudo();
     renderTurmas();
+    renderListaTurmas();
   } catch (erro) {
     if (/sess/i.test(erro.message) || /autentic/i.test(erro.message)) {
       sair(true);
@@ -264,6 +288,39 @@ async function limpar(modo) {
   }
 }
 
+async function adicionarTurma() {
+  const nome = el.campoNovaTurma.value.trim();
+  if (nome.length < 2) {
+    toast("Digite o nome da turma (ex.: 7º A).", "err");
+    return;
+  }
+  try {
+    const r = await criarTurma(token, nome);
+    turmasCadastradas = r.turmas || turmasCadastradas;
+    el.campoNovaTurma.value = "";
+    renderListaTurmas();
+    renderTurmas();
+    toast("Turma " + nome + " cadastrada! 🏫", "ok");
+  } catch (erro) {
+    toast(erro.message, "err");
+  }
+}
+
+async function removerTurma(nome) {
+  if (!confirm('Remover a turma "' + nome + '"? Os pedidos dela não são apagados.')) return;
+  try {
+    const r = await removerTurma(token, nome);
+    turmasCadastradas = r.turmas || turmasCadastradas.filter((t) => t !== nome);
+    const recarregar = filtroTurma === nome;
+    if (recarregar) filtroTurma = "";
+    renderListaTurmas();
+    renderTurmas();
+    if (recarregar) await carregar(false);
+  } catch (erro) {
+    toast(erro.message, "err");
+  }
+}
+
 // ---------------------------------------------------------------------------
 // Inicialização
 // ---------------------------------------------------------------------------
@@ -284,6 +341,9 @@ export function initProfessor(cbs = {}) {
     listaRanking: document.getElementById("lista-ranking"),
     listaPedidos: document.getElementById("lista-pedidos"),
     selTurma: document.getElementById("sel-turma"),
+    campoNovaTurma: document.getElementById("campo-nova-turma"),
+    btnAddTurma: document.getElementById("btn-add-turma"),
+    listaTurmas: document.getElementById("lista-turmas"),
     btnAtualizar: document.getElementById("btn-atualizar"),
     btnLimparTocadas: document.getElementById("btn-limpar-tocadas"),
     btnLimparTudo: document.getElementById("btn-limpar-tudo"),
@@ -297,6 +357,19 @@ export function initProfessor(cbs = {}) {
   el.selTurma.addEventListener("change", () => {
     filtroTurma = el.selTurma.value;
     carregar(false);
+  });
+
+  el.btnAddTurma.addEventListener("click", adicionarTurma);
+  el.campoNovaTurma.addEventListener("keydown", (ev) => {
+    if (ev.key === "Enter") {
+      ev.preventDefault();
+      adicionarTurma();
+    }
+  });
+  el.listaTurmas.addEventListener("click", (ev) => {
+    const botao = ev.target.closest(".acao-turma");
+    if (!botao) return;
+    removerTurma(botao.dataset.turma);
   });
 
   el.listaPedidos.addEventListener("click", (ev) => {
