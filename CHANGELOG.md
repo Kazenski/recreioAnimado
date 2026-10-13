@@ -10,6 +10,18 @@ Todas as alterações relevantes neste projeto são documentadas neste arquivo.
 
 ## [Unreleased] - Em desenvolvimento
 
+## [v1.2.2] — 2026-10-13
+### Corrigido
+- **Seletor de turma não apaga mais a escolha**: recarregar a lista de turmas (ao abrir o seletor) preserva a turma já selecionada em vez de voltar para "Escolha sua turma…". Também há trava contra busca duplicada (`focus`+`click` disparavam juntos).
+- **Turma mantida após o envio**: o seletor (e o nome) não são mais zerados a cada pedido enviado, facilitando vários pedidos em seguida.
+- Erro de rede ao listar turmas não zera mais o seletor; a turma escolhida é lembrada no aparelho (`localStorage`).
+
+### Arquivos tocados
+- js/aluno.js
+- index.html
+- CHANGELOG.md
+- changelog.json
+
 ## [v1.2.1] — 2026-10-10
 ### Adicionado
 - **Logo do colégio** na tela dos alunos (recorte redondo), arquivo `assets/colegio.jpg`.

@@ -10,6 +10,7 @@ const DEBOUNCE_MS = 350;
 const MIN_CHARS = 2;
 const COOLDOWN_S = 20;
 const ID_CLIENTE_KEY = "recreio.clienteId";
+const TURMA_KEY = "recreio.turma";
 
 // ---------------------------------------------------------------------------
 // Estado do módulo
@@ -164,25 +165,58 @@ function limparSelecao(limparCampo = true) {
 // ---------------------------------------------------------------------------
 // Turmas (seletor)
 // ---------------------------------------------------------------------------
+let carregandoTurmas = false;
+
+function turmaSalva() {
+  try {
+    return localStorage.getItem(TURMA_KEY) || "";
+  } catch (e) {
+    return "";
+  }
+}
+
+function salvarTurma(turma) {
+  try {
+    if (turma) localStorage.setItem(TURMA_KEY, turma);
+  } catch (e) {
+    /* ignora: seletor continua funcionando sem persistência */
+  }
+}
+
 function preencherTurmas(turmas) {
+  // Preserva a escolha atual: recarregar a lista (ex.: professor cadastrou
+  // uma turma nova) não pode apagar o que o aluno já selecionou.
+  const anterior = (el.campoTurma && el.campoTurma.value) || turmaSalva();
   el.campoTurma.innerHTML =
-    '<option value="" disabled selected>Escolha sua turma…</option>';
+    '<option value="" disabled>Escolha sua turma…</option>';
   (turmas || []).forEach((t) => {
     const opt = document.createElement("option");
     opt.value = t;
     opt.textContent = t;
     el.campoTurma.appendChild(opt);
   });
+  if (anterior && (turmas || []).includes(anterior)) {
+    el.campoTurma.value = anterior;
+  } else {
+    el.campoTurma.value = "";
+    el.campoTurma.selectedIndex = 0;
+  }
   atualizarBotaoEnviar();
 }
 
 async function carregarTurmas() {
+  if (carregandoTurmas) return; // focus+click disparam juntos: evita fetch duplo
+  carregandoTurmas = true;
   try {
     const r = await listarTurmas();
     preencherTurmas(r.turmas || []);
   } catch (erro) {
-    preencherTurmas([]);
+    // Em caso de erro de rede, mantém as opções atuais (e a seleção)
+    // em vez de zerar o seletor.
+    if (!el.campoTurma.options.length) preencherTurmas([]);
     toast("Não foi possível carregar as turmas. Recarregue a página.", "err");
+  } finally {
+    carregandoTurmas = false;
   }
 }
 
@@ -265,9 +299,8 @@ async function enviar() {
     mostrarSucesso(musicaEnviada);
     toast("Pedido enviado! 🎵", "ok");
     limparSelecao();
-    // Limpa o nome depois de enviar, para o próximo pedido.
-    el.campoNome.value = "";
-    el.campoTurma.value = "";
+    // Mantém turma (e nome): o aluno costuma fazer vários pedidos em seguida
+    // e apagar o seletor após cada envio parecia um bug.
     iniciarCooldown(COOLDOWN_S);
   } catch (erro) {
     mostrarErro(erro.message);
@@ -341,9 +374,12 @@ export function initAluno() {
 
   el.btnEnviar.addEventListener("click", enviar);
 
-  // A turma escolhida atualiza o botão de envio.
+  // A turma escolhida atualiza o botão de envio e é lembrada.
   el.campoTurma.addEventListener("input", atualizarBotaoEnviar);
-  el.campoTurma.addEventListener("change", atualizarBotaoEnviar);
+  el.campoTurma.addEventListener("change", () => {
+    salvarTurma(el.campoTurma.value);
+    atualizarBotaoEnviar();
+  });
 
   // Recarrega as turmas ao abrir o seletor (professor pode ter cadastrado novas).
   el.campoTurma.addEventListener("focus", carregarTurmas);

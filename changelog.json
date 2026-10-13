@@ -1,8 +1,51 @@
 {
-  "geradoEm": "2026-10-10T19:48:17+00:00",
-  "versaoAtual": "1.2.1",
-  "totalEntradas": 7,
+  "geradoEm": "2026-10-13T13:10:48+00:00",
+  "versaoAtual": "1.2.2",
+  "totalEntradas": 8,
   "entradas": [
+    {
+      "versao": "1.2.2",
+      "data": "2026-10-13",
+      "autor": "",
+      "escopo": "",
+      "arquivos": [
+        "js/aluno.js",
+        "index.html",
+        "CHANGELOG.md",
+        "changelog.json"
+      ],
+      "secoes": [
+        {
+          "titulo": "Corrigido",
+          "chave": "corrigido",
+          "blocos": [
+            {
+              "titulo": "",
+              "nivel": null,
+              "linhas": [
+                [
+                  "li",
+                  "**Seletor de turma não apaga mais a escolha**: recarregar a lista de turmas (ao abrir o seletor) preserva a turma já selecionada em vez de voltar para \"Escolha sua turma…\". Também há trava contra busca duplicada (`focus`+`click` disparavam juntos)."
+                ],
+                [
+                  "li",
+                  "**Turma mantida após o envio**: o seletor (e o nome) não são mais zerados a cada pedido enviado, facilitando vários pedidos em seguida."
+                ],
+                [
+                  "li",
+                  "Erro de rede ao listar turmas não zera mais o seletor; a turma escolhida é lembrada no aparelho (`localStorage`)."
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          "titulo": "Arquivos tocados",
+          "chave": "arquivos tocados",
+          "blocos": []
+        }
+      ]
+    },
     {
       "versao": "1.2.1",
       "data": "2026-10-10",
