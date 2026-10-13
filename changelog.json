@@ -1,8 +1,43 @@
 {
-  "geradoEm": "2026-10-13T13:10:48+00:00",
-  "versaoAtual": "1.2.2",
-  "totalEntradas": 8,
+  "geradoEm": "2026-10-13T13:14:21+00:00",
+  "versaoAtual": "1.2.3",
+  "totalEntradas": 9,
   "entradas": [
+    {
+      "versao": "1.2.3",
+      "data": "2026-10-13",
+      "autor": "",
+      "escopo": "",
+      "arquivos": [
+        "js/main.js",
+        "index.html",
+        "CHANGELOG.md",
+        "changelog.json"
+      ],
+      "secoes": [
+        {
+          "titulo": "Corrigido",
+          "chave": "corrigido",
+          "blocos": [
+            {
+              "titulo": "",
+              "nivel": null,
+              "linhas": [
+                [
+                  "li",
+                  "**Professor vai e volta sem relogar**: o botão do cabeçalho fica sempre visível — deslogado ele leva ao login, logado ele vira um atalho (\"Painel\") direto para o painel. Antes, estando na visão do aluno e logado, só havia \"Sair\", obrigando a deslogar e entrar de novo para ver o admin."
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          "titulo": "Arquivos tocados",
+          "chave": "arquivos tocados",
+          "blocos": []
+        }
+      ]
+    },
     {
       "versao": "1.2.2",
       "data": "2026-10-13",

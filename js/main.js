@@ -24,7 +24,13 @@ function atualizarCabecalho() {
   const logado = prof.logado();
   document.getElementById("selo-logado").classList.toggle("hidden", !logado);
   document.getElementById("btn-sair").classList.toggle("hidden", !logado);
-  document.getElementById("btn-painel").classList.toggle("hidden", logado);
+  // O botão do painel fica SEMPRE visível: deslogado ele leva ao login;
+  // logado ele vira um atalho direto para o painel (sem precisar sair/entrar).
+  const btnPainel = document.getElementById("btn-painel");
+  btnPainel.innerHTML = logado
+    ? '<i class="fa-solid fa-table-columns"></i><span class="hidden sm:inline">Painel</span>'
+    : '<i class="fa-solid fa-lock"></i><span class="hidden sm:inline">Professor</span>';
+  btnPainel.title = logado ? "Ver painel do professor" : "Painel do professor";
 }
 
 // ---------------------------------------------------------------------------

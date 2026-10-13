@@ -10,6 +10,16 @@ Todas as alterações relevantes neste projeto são documentadas neste arquivo.
 
 ## [Unreleased] - Em desenvolvimento
 
+## [v1.2.3] — 2026-10-13
+### Corrigido
+- **Professor vai e volta sem relogar**: o botão do cabeçalho fica sempre visível — deslogado ele leva ao login, logado ele vira um atalho ("Painel") direto para o painel. Antes, estando na visão do aluno e logado, só havia "Sair", obrigando a deslogar e entrar de novo para ver o admin.
+
+### Arquivos tocados
+- js/main.js
+- index.html
+- CHANGELOG.md
+- changelog.json
+
 ## [v1.2.2] — 2026-10-13
 ### Corrigido
 - **Seletor de turma não apaga mais a escolha**: recarregar a lista de turmas (ao abrir o seletor) preserva a turma já selecionada em vez de voltar para "Escolha sua turma…". Também há trava contra busca duplicada (`focus`+`click` disparavam juntos).
